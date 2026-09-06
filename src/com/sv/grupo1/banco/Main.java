@@ -63,6 +63,7 @@ public class Main {
         }
 
         bancoPrincipal.imprimirAuditoriaSaldos();
+        System.out.println("Total de cuentas activas en el banco: " + bancoPrincipal.contarCuentasActivas());
         guardarEnArchivoDat(comprobantesCompletados, ARCHIVO);
     }
 
