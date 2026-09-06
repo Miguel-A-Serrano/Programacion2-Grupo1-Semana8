@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class Bank {
+
     private final String nombreBanco;
     private final Map<String, BankAccount> mapaCuentas = new HashMap<>();
     private final ExecutorService servicioEjecucion = Executors.newVirtualThreadPerTaskExecutor();
@@ -41,20 +42,6 @@ public class Bank {
         System.out.println("==================================================\n");
     }
     public int contarCuentasActivas() {
-    return mapaCuentas.size();
-         public void imprimirAuditoriaSaldos() {
-        System.out.println("\n==================================================");
-        System.out.println(" AUDITORÍA FINAL DE CUENTAS - " + nombreBanco.toUpperCase());
-        System.out.println("==================================================");
-        mapaCuentas.values().forEach(cuenta ->
-            System.out.printf("Cuenta: %-15s | Saldo Auditado: $%.2f%n", cuenta.getNumeroCuenta(), cuenta.getSaldo())
-        );
-        System.out.println("==================================================\n");
-    }
-
-    public int contarCuentasActivas() {
         return mapaCuentas.size();
     }
-}
-}
 }
