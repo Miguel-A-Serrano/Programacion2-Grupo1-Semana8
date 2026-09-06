@@ -44,6 +44,18 @@ public class Receipt implements Serializable {
         return fechaHora;
     }
 
+    public boolean isExitoso() {
+        return "EXITO".equalsIgnoreCase(estado);
+    }
+
+    public boolean isRechazado() {
+        return estado != null && (estado.contains("RECHAZAD") || estado.contains("FALLO"));
+    }
+
+    public String getFormatoResumido() {
+        return String.format("%s (%s): %s - %s", idTransaccion, tipoOperacion, estado, detalle);
+    }
+
     @Override
     public String toString() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
