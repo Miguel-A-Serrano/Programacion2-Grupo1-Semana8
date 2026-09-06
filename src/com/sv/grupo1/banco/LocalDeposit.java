@@ -12,8 +12,12 @@ public class LocalDeposit extends Transaction {
     public Receipt call() {
         System.out.println("-> [Hilo " + Thread.currentThread().threadId() + "] Depósito local en " + cuentaDestino.getNumeroCuenta());
         synchronized (cuentaDestino) {
-            cuentaDestino.depositar(monto);
-            return new Receipt(idTransaccion, "DEPOSITO_LOCAL", "EXITO", "Monto acreditado: $" + monto + " a " + cuentaDestino.getNumeroCuenta());
+            boolean exito = cuentaDestino.depositar(monto);
+            if (exito) {
+                return new Receipt(idTransaccion, "DEPOSITO_LOCAL", "EXITO", "Monto acreditado: $" + monto + " a " + cuentaDestino.getNumeroCuenta());
+            } else {
+                return new Receipt(idTransaccion, "DEPOSITO_LOCAL", "RECHAZADO", "Monto inválido: $" + monto);
+            }
         }
     }
 }

@@ -40,6 +40,10 @@ public class Main {
             listaFuturos.add(bancoPrincipal.procesarTransaccion(transaccion));
         }
 
+        // Prueba puntual: depósito con monto inválido, debe quedar RECHAZADO
+        Transaction depositoInvalido = new LocalDeposit("TXN-051", bancoPrincipal.obtenerCuenta("CTA-001"), -20.0);
+        listaFuturos.add(bancoPrincipal.procesarTransaccion(depositoInvalido));
+
         bancoPrincipal.apagarServicio();
 
         System.out.println("\n==================================================");
