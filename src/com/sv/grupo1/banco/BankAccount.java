@@ -29,9 +29,11 @@ public class BankAccount {
         return false;
     }
 
-    public synchronized void depositar(double monto) {
+    public synchronized boolean depositar(double monto) {
         if (monto > 0) {
             this.saldo += monto;
+            return true;
         }
+        return false;
     }
 }
