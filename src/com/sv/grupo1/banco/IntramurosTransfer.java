@@ -15,6 +15,21 @@ public class IntramurosTransfer extends Transaction {
 
     @Override
     public Receipt call() {
+        if (cuentaOrigen == null || cuentaDestino == null) {
+            return new Receipt(idTransaccion, "TRANSFERENCIA", "RECHAZADA",
+                    "Cuenta origen o destino no válida.");
+        }
+
+        if (monto <= 0) {
+            return new Receipt(idTransaccion, "TRANSFERENCIA", "RECHAZADA",
+                    "Monto inválido para transferencia: $" + monto);
+        }
+
+        if (cuentaOrigen.getNumeroCuenta().equals(cuentaDestino.getNumeroCuenta())) {
+            return new Receipt(idTransaccion, "TRANSFERENCIA", "RECHAZADA",
+                    "La cuenta de origen y destino no pueden ser la misma: " + cuentaOrigen.getNumeroCuenta());
+        }
+
         System.out.println("-> [Hilo " + Thread.currentThread().threadId() + "] Transferencia de "
                 + cuentaOrigen.getNumeroCuenta() + " a " + cuentaDestino.getNumeroCuenta());
 
