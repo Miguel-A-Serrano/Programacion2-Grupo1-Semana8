@@ -16,4 +16,8 @@ public abstract class   Transaction implements Callable<Receipt> {
 
     @Override
     public abstract Receipt call() throws Exception;
+
+    public String getidTransaccion (){
+        return this.idTransaccion;
+    }
 }
