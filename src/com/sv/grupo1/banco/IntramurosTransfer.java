@@ -17,12 +17,12 @@ public class IntramurosTransfer extends Transaction {
     public Receipt call() {
         if (cuentaOrigen == null || cuentaDestino == null) {
             return new Receipt(idTransaccion, "TRANSFERENCIA", "RECHAZADA",
-                    "Cuenta origen o destino no válida.");
+                    "Cuenta origen o destino no valida!.");
         }
 
         if (monto <= 0) {
             return new Receipt(idTransaccion, "TRANSFERENCIA", "RECHAZADA",
-                    "Monto inválido para transferencia: $" + monto);
+                    "Monto invalido para transferencia: $" + monto);
         }
 
         if (cuentaOrigen.getNumeroCuenta().equals(cuentaDestino.getNumeroCuenta())) {
@@ -30,7 +30,7 @@ public class IntramurosTransfer extends Transaction {
                     "La cuenta de origen y destino no pueden ser la misma: " + cuentaOrigen.getNumeroCuenta());
         }
 
-        System.out.println("-> [Hilo " + Thread.currentThread().threadId() + "] Transferencia de "
+        System.out.println("call() => [Hilo " + Thread.currentThread().threadId() + "] Transferencia de "
                 + cuentaOrigen.getNumeroCuenta() + " a " + cuentaDestino.getNumeroCuenta());
 
         // Prevención de Deadlock mediante ordenamiento de bloqueos
@@ -51,7 +51,7 @@ public class IntramurosTransfer extends Transaction {
                         // Reversión por consistencia de fondos
                         cuentaOrigen.depositar(monto);
                         return new Receipt(idTransaccion, "TRANSFERENCIA", "FALLO_REVERTIDO",
-                                "Destino no respondió. Fondos revertidos: $" + monto);
+                                "Destino no respondio. Fondos revertidos: $" + monto);
                     }
                 } else {
                     return new Receipt(idTransaccion, "TRANSFERENCIA", "RECHAZADA",
