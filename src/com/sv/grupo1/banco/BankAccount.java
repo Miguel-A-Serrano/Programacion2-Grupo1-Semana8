@@ -21,7 +21,7 @@ public class BankAccount {
     }
 
     public synchronized boolean retirar(double monto) {
-        if (monto > 0 && (this.saldo - monto)>= 3.0) {
+        if (monto > 0 && (this.saldo - monto) >= 1.0) {
             this.saldo -= monto;
             System.out.println("Retiro exitoso.");
             return true;
