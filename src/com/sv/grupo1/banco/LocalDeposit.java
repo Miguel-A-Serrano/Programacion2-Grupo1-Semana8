@@ -10,7 +10,7 @@ public class LocalDeposit extends Transaction {
 
     @Override
     public Receipt call() {
-        System.out.println("-> [Hilo " + Thread.currentThread().threadId() + "] Depósito local en " + cuentaDestino.getNumeroCuenta());
+        System.out.println("call() => [Hilo " + Thread.currentThread().threadId() + "] Deposito local en " + cuentaDestino.getNumeroCuenta());
         synchronized (cuentaDestino) {
             cuentaDestino.depositar(monto);
             return new Receipt(idTransaccion, "DEPOSITO_LOCAL", "EXITO", "Monto acreditado: $" + monto + " a " + cuentaDestino.getNumeroCuenta());
