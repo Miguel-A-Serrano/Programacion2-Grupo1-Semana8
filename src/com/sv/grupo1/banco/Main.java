@@ -2,9 +2,7 @@ package com.sv.grupo1.banco;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Future;
 
 public class Main {
     private static final String ARCHIVO = "transacciones_grupo_1.dat";
@@ -20,7 +18,7 @@ public class Main {
         System.out.println(" INICIO DE PRUEBAS MASIVAS CONCURRENTES (50 HILOS)");
         System.out.println("==================================================");
 
-        List<Future<Receipt>> listaFuturos = new ArrayList<>();
+        DespachadorOrdenes despachador = new DespachadorOrdenes(bancoPrincipal);
 
         // Generar 50 transacciones mixtas concurrentes
         for (int i = 1; i <= 50; i++) {
@@ -37,12 +35,12 @@ public class Main {
                 transaccion = new IntramurosTransfer(idTransaccion, origen, destino, 100.0);
             }
 
-            listaFuturos.add(bancoPrincipal.procesarTransaccion(transaccion));
+            despachador.despachar(transaccion);
         }
 
         // Prueba puntual: depósito con monto inválido, debe quedar RECHAZADO
         Transaction depositoInvalido = new LocalDeposit("TXN-051", bancoPrincipal.obtenerCuenta("CTA-001"), -20.0);
-        listaFuturos.add(bancoPrincipal.procesarTransaccion(depositoInvalido));
+        despachador.despachar(depositoInvalido);
 
         bancoPrincipal.apagarServicio();
 
@@ -50,17 +48,8 @@ public class Main {
         System.out.println("        RECEPCIÓN DE COMPROBANTES ");
         System.out.println("==================================================");
 
-        List<Receipt> comprobantesCompletados = new ArrayList<>();
-
-        for (Future<Receipt> futuro : listaFuturos) {
-            try {
-                Receipt comprobante = futuro.get();
-                System.out.println("<- [SALIDA] " + comprobante);
-                comprobantesCompletados.add(comprobante);
-            } catch (Exception e) {
-                System.err.println("Error procesando comprobante: " + e.getMessage());
-            }
-        }
+        List<Receipt> comprobantesCompletados = despachador.recolectarComprobantes();
+        comprobantesCompletados.forEach(comprobante -> System.out.println("<- [SALIDA] " + comprobante));
 
         bancoPrincipal.imprimirAuditoriaSaldos();
         System.out.println("Total de cuentas activas en el banco: " + bancoPrincipal.contarCuentasActivas());
